@@ -19,8 +19,7 @@ class Blockchain:
         return block
 
     def calcHash(self,block):
-        encodedBlock = json.dumps(block, sort_keys=True).encode()
-        return hashlib.sha256(encodedBlock).hexdigest()
+        return hashlib.sha256(json.dumps(block, sort_keys=True).encode()).hexdigest()
 
 chain1 = Blockchain()
 i = 0
