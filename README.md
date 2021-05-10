@@ -1,2 +1,3 @@
-# python_blockchain
-it's a simple blockchain made in python
+# python_blockchain - learning Blockchain Technology
+
+it's a simple blockchain made in Python
