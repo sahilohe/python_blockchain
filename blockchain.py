@@ -47,13 +47,13 @@ class Blockchain:
 blockchain1 = Blockchain()
 i = 0
 
-while i < 10:
-    blockchain1.createBlock({'amount': i + 50})
+while i < 10: # let's write 10 blocks 
+    blockchain1.createBlock({'amount': i + 50}) # writing random blocks to the chain, incrementing the amount each time to + 1
     i = i + 1
 
 json_data = json.dumps(blockchain1.chain,indent=4) # looks good in json format
 
-print(json_data)
+#print(json_data) 
 
 #write the output to a file named 'chainData.dat'
 with open('chainData.dat', 'w') as chainData:
