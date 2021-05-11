@@ -1,19 +1,40 @@
 import datetime, json, hashlib
 
+#Define the blockchain
 class Blockchain:
 
     def __init__(self):
-        self.chain = []
-        self.createBlock({'amount': 50})
+        self.chain = [self.genesisBlock()]
+        #self.genesisBlock()
+
+    def genesisBlock(self):
+
+        gBlock = {
+            'index' : 0,
+
+            'hash' : self.calcHash(str({
+                'index': 0, 
+                'timstamp': datetime.datetime.now(), 
+                'previousHash': '0xx',
+                'data': {'amount ': 500}
+                
+            }))
+                
+                
+        }
+        #self.chain.append(gBlock)
+        return gBlock
 
     def createBlock(self, data):
 
-        block = { 'index' : len(self.chain) + 1,
+        block = { 'index' : self.chain[-1].get('index') + 1,
                   'timestamp' : str(datetime.datetime.now()),
-                  'previousHash' : self.calcHash(len(self.chain) - 1),
+                  'previousHash' : self.chain[-1].get('hash'),
                   'data' : data,
-                  'hash' : self.calcHash(len(self.chain))
         }
+
+        block_hash = self.calcHash(block)
+        block.update({'hash' : block_hash})
 
         self.chain.append(block)
         return block
@@ -21,14 +42,19 @@ class Blockchain:
     def calcHash(self,block):
         return hashlib.sha256(json.dumps(block, sort_keys=True).encode()).hexdigest()
 
-chain1 = Blockchain()
+# Let's test the blockchain
+
+blockchain1 = Blockchain()
 i = 0
 
-while i < 5:
-    chain1.createBlock({'amount': i + 50})
+while i < 10:
+    blockchain1.createBlock({'amount': i + 50})
     i = i + 1
 
-json_data = json.dumps(chain1.chain,indent=4)
-#print(json_data)
-with open('chainData.txt', 'w') as fileWrite:
-    fileWrite.write(json_data)
+json_data = json.dumps(blockchain1.chain,indent=4) # looks good in json format
+
+print(json_data)
+
+#write the output to a file named 'chainData.dat'
+with open('chainData.dat', 'w') as chainData:
+    chainData.write(json_data)
