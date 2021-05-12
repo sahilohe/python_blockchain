@@ -11,7 +11,7 @@ class PoW_Chain(Blockchain):
 	        curr_hash = hashlib.sha256((str(self.chain) + str(nonce)).encode()).hexdigest()
 	        nonce = nonce + 1
 
-	        if curr_hash.startswith('00000'): #runs until the hash of the number starts with 4 zeros
+	        if curr_hash.startswith('00000'): #runs until the hash of the number starts with 5 zeros
                     print(curr_hash)
                     number_found = True
 
