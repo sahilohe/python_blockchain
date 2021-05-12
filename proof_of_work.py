@@ -20,7 +20,7 @@ chain1 = PoW_Chain()
 i = 0
 #this will run after the number is found, kind of mining
 while i < 4:
-    chain1.createBlock({'amount': i + 50})
+    chain1.createBlock({'amount': i + 50}) #just creates some blocks
     i = i + 1
 
 json_data = json.dumps(chain1.chain,indent=4) # looks good in json format
