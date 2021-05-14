@@ -1,3 +1,5 @@
+# THIS FUNCTION HAS BEEN IMPLEMENTED IN THE ORIGIANL blockchain.py FILE
+
 from blockchain import Blockchain
 import hashlib,json
 
