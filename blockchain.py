@@ -7,24 +7,34 @@ class Blockchain:
     def genesisBlock(self):
         gBlock = {
             'index' : 0,
-            'hash' : self.calcHash(str({
-                'index': 0, 
-                'timstamp': datetime.datetime.now(), 
-                'previousHash': '0xx',
-                'data': {'amount ': 500}
-                
-            }))               
+            'timestamp' : str(datetime.datetime.now()),
+            'previousHash': "0xx",
+            'data': {'amount ': 500}
+                              
         }
-        #self.chain.append(gBlock)
+        gBlock_hash = self.calcHash(gBlock)
+        gBlock.update({'hash': gBlock_hash})
         return gBlock
 
-    def createBlock(self, data):
+    def mineBlock(self, data):
 
-        block = { 'index' : self.chain[-1].get('index') + 1,
-                  'timestamp' : str(datetime.datetime.now()),
-                  'previousHash' : self.chain[-1].get('hash'),
-                  'data' : data,
-        }
+        number_found = False 
+        nonce = 0 
+        while not number_found:
+	        curr_hash = hashlib.sha256((str(self.chain) + str(nonce)).encode()).hexdigest()
+	        nonce = nonce + 1
+
+	        if curr_hash.startswith('0000'): #runs until the hash of the number starts with 4 zeros
+                    #print(curr_hash)
+                    number_found = True
+        
+        block = {
+
+        'index' : self.chain[-1].get('index') + 1,
+        'timestamp' : str(datetime.datetime.now()),
+        'previousHash' : self.chain[-1].get('hash'),
+        'data' : data,
+    }
 
         block_hash = self.calcHash(block)
         block.update({'hash' : block_hash})
@@ -35,17 +45,22 @@ class Blockchain:
     def calcHash(self,block):
         return hashlib.sha256(json.dumps(block, sort_keys=True).encode()).hexdigest()
 
-# Let's test the blockchain
-blockchain1 = Blockchain()
-i = 0
+chain1 = Blockchain()
 
-while i < 10: # let's write 10 blocks 
-    blockchain1.createBlock({'amount': i + 50}) # writing random blocks to the chain, incrementing the amount each time to + 1
-    i = i + 1
+def mineBlock():
+    print('Mining Blocks\n')
+    i = 0
 
-json_data = json.dumps(blockchain1.chain,indent=4) # looks good in json format
-#print(json_data) 
+    while i < 4:
+        chain1.mineBlock({'amount': i + 40})
+        i += 1
 
+    return "Done\n"
+
+if __name__ == '__main__':
+    mineBlock()
+    json_data = json.dumps(chain1.chain, indent=4)
+    print(json_data)
 #write the output to a file named 'chainData.dat'
-with open('chainData.dat', 'w') as chainData:
-    chainData.write(json_data)
+    with open('chainData.dat', 'w') as chainData:
+        chainData.write(json_data)
