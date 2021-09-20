@@ -1,11 +1,11 @@
 import datetime, json, hashlib
 
 class Block:
-    def __init__(self,index, previousHash, data, timestamp=str(datetime.datetime.now())):
+    def __init__(self,index, previousHash, data):
         self.index = index
         self.previousHash = previousHash
         self.data = data
-        self.timestamp = timestamp
+        self.timestamp = str(datetime.now())
         self.hash = self.calculate_hash()
 
     def calculate_hash(self):
